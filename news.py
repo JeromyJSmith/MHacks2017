@@ -14,13 +14,6 @@ def json2obj(data): return json.loads(data, object_hook=_json_object_hook)
 def hasWord(str, goodWords):
 	return len(difflib.get_close_matches(str, goodWords, 1, 0.8)) > 0
 
-#take a full input string, see if it has any of the wanted words
-def anyWordMatch(words, goodWords):
-	for word in words:
-		if hasWord(word, goodWords):
-			return True
-	return False
-
 #find news outlet based on input
 def findOutlet(str):
 	str = str.lower()
