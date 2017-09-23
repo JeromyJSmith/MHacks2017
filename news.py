@@ -73,12 +73,17 @@ def getNews(str):
 	outlet = findOutlet(str)
 
 	#get the requested top stories
-	requestJSON = requests.get('https://newsapi.org/v1/articles?source={}&apiKey=cbc90faf350c4cbe93ca4446bb3ff1b0'.format(outlet))
+	try:
+		requestJSON = requests.get('https://newsapi.org/v1/articles?source={}&apiKey=cbc90faf350c4cbe93ca4446bb3ff1b0'.format(outlet))
+	except Exception as e:
+		log.error("news.py: " + e)
+		return "SERVER_ERROR"
 
 	#get all headlines from the json object with all stories
 	news = json2obj(requestJSON.text)
 	articles = news.articles[:NUM_TOP_STORIES]
 	headlines = [article.title for article in articles]
+	log.info("news.py: number of headlines = %d" % len(headlines))
 
 	finalText = ""
 
@@ -88,9 +93,11 @@ def getNews(str):
 			headlines[i] = headlines[i][:MAX_HEADLINE_LENGTH] + "..."
 		finalText += headlines[i] + "\n"
 
+	if (len(finalText) == 0):
+		log.warning("news.py: finalText was empty")
+		return "SERVER_ERROR"
+
 	#remove unnecessary last newline
 	finalText = finalText[:-2]
 
 	return finalText
-
-print(getNews("jangus mcfreaking technlgy asdfas;dfk "))
