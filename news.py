@@ -95,5 +95,3 @@ def getNews(str):
 	finalText = finalText[:-2]
 
 	return finalText
-
-print(getNews("tech"))
