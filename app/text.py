@@ -3,7 +3,7 @@ import logging as log
 from twilio.rest import Client
 import config
 
-DIFF_SENSITIVITY=0.6
+DIFF_SENSITIVITY=0.7
 
 def send_text(body, to_num, from_num):
     log.debug('Sending text')
