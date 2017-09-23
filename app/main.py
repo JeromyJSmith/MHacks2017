@@ -1,6 +1,7 @@
 import config
 from flask import Flask, render_template, request
 from twilio.rest import Client
+from twilio.twiml.messaging_response import Message, MessagingResponse
 
 app = Flask(__name__)
 
@@ -10,10 +11,20 @@ def send_text(body, to_num, from_num):
 						from_=from_num,
 						body=body)
 
-@app.route('/sms')
+def get_response_text(body):
+    return 'response text'
+
+@app.route('/sms', methods=['POST'])
 def sms_handler():
-   return "Hello from sms"
- 
+    # hierarchy of responses, help at the top
+    body = request.form['Body']
+    from_num = request.form['From']
+
+    text = get_response_text(body)
+    resp = MessagingResponse()
+    resp.message(text)
+    return str(resp)
+
 @app.route('/')
 def index():
     return render_template('index.html')
