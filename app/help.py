@@ -19,7 +19,7 @@ def locationOnly(strin):
 def sendHelp(location):
     location = locationOnly(location).strip()
     fromNumber = '+12622222437'
-    body = user + " has listed you as his emergency contact. \nThey have signified they are in danger and need help."
+    body = user + " has listed you as their emergency contact. \nThey have signified they are in danger and need help."
     if location != "":
         body += "\nThey are located in " + location + "."
     for number in config.helpNumbers:
