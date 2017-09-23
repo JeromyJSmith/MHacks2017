@@ -1,0 +1,16 @@
+#! /bin/bash
+
+if [[ "$1" == "-h" ]] || [ $# -eq 0 ]; then
+  echo "build-run <img-name> <container-name>"
+  echo "Run from root project directory"
+  exit 0
+fi
+
+img_name=$1
+container_name=$2
+
+echo "Building docker image $img_name..."
+docker build -t $img_name .
+
+echo "Running docker container $container_name..."
+docker run --name $container_name -p 80:80 $img_name
