@@ -1,8 +1,10 @@
+import logging as log
 import difflib
 import requests
 import json
 from collections import namedtuple
 
+log.basicConfig(level=log.DEBUG)
 NUM_TOP_STORIES = 5
 MAX_HEADLINE_LENGTH = 45
 
@@ -56,9 +58,11 @@ def findOutlet(str):
 	for outlet in allOutlets:
 		for word in words:
 			if hasWord(word, outlet["words"]):
+				log.info("news.py: chose news outlet: " + outlet["outlet"])
 				return outlet["outlet"]
 
 	#default news outlet
+	log.info("news.py: went with default news outlet")
 	return "the-wall-street-journal"
 
 def getNews(str):
@@ -66,7 +70,7 @@ def getNews(str):
 	outlet = "the-wall-street-journal"
 
 	#print(hasWord('pupy', ['ape', 'apple', 'peach']))
-	outlet = findOutlet("str")
+	outlet = findOutlet(str)
 
 	#get the requested top stories
 	requestJSON = requests.get('https://newsapi.org/v1/articles?source={}&apiKey=cbc90faf350c4cbe93ca4446bb3ff1b0'.format(outlet))
@@ -88,3 +92,5 @@ def getNews(str):
 	finalText = finalText[:-2]
 
 	return finalText
+
+print(getNews("jangus mcfreaking technlgy asdfas;dfk "))
