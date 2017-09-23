@@ -1,7 +1,8 @@
 import difflib
 import logging as log
 from twilio.rest import Client
-import config
+#import config
+import weather, wiki, news
 
 DIFF_SENSITIVITY=0.6
 
@@ -16,8 +17,7 @@ def get_api_words():
     return [
         {'api': 'wikipedia', 'words': ['wiki', 'wikipedia']},
         {'api': 'news', 'words': ['news', 'headlines', 'worldnews']},
-        {'api': 'weather', 'words': ['rain', 'weather', 'sunny', 'snow',
-            'forecast']},
+        {'api': 'weather', 'words': ['weather']},
     ]
 
 def pretend_wiki():
@@ -26,14 +26,13 @@ def pretend_wiki():
 def pretend_news():
     return 'news function'
 
-def run_api_function(api):
+def run_api_function(api, body):
     options = {
-        # 'wikipedia':
-        'wikipedia': pretend_wiki,
-        'news': pretend_news
-        # 'weather':
+        'wikipedia': wiki.search,
+        'news': news.getNews,
+        'weather': weather.getWeather
     }
-    return options[api]()
+    return options[api](body)
 
 def has_word(string, good_words):
     return len(difflib.get_close_matches(string, good_words, 1,
@@ -54,6 +53,6 @@ def get_response_text(body):
         return 'Nothing chosen'
 
     log.debug('api found: %s' % chosen_api)
-    ret_string = run_api_function(chosen_api)
+    ret_string = run_api_function(chosen_api, body)
     if ret_string:
         return ret_string
