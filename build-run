@@ -13,4 +13,4 @@ echo "Building docker image $img_name..."
 docker build -t $img_name .
 
 echo "Running docker container $container_name..."
-docker run --name $container_name -p 80:80 $img_name
+docker run --rm --name $container_name -p 80:80 $img_name
