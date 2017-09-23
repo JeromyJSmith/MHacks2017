@@ -3,11 +3,13 @@ from flask import Flask, render_template, request
 from twilio.rest import Client
 from twilio.twiml.messaging_response import Message, MessagingResponse
 import difflib
+import logging as log
 
 DIFF_SENSITIVITY=0.6
 app = Flask(__name__)
 
 def send_text(body, to_num, from_num):
+    log.debug('Sending text')
     client = Client(config.ACCOUNT_SID, config.AUTH_TOKEN)
     message = client.api.account.messages.create(to=to_num,
 						from_=from_num,
@@ -50,8 +52,10 @@ def get_response_text(body):
                 chosen_api = api['api']
 
     if not chosen_api:
+        log.error('No api found from body')
         return 'Nothing chosen'
 
+    log.debug('api found: %s' % chosen_api)
     ret_string = run_api_function(chosen_api)
     if ret_string:
         return ret_string
@@ -60,7 +64,7 @@ def get_response_text(body):
 def sms_handler():
     body = request.form['Body']
     from_num = request.form['From']
-
+    log.debug('Text from: %s says: (%s)' % (from_num, body))
     text = get_response_text(body)
 
     resp = MessagingResponse()
