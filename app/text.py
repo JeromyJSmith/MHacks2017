@@ -4,7 +4,7 @@ from twilio.rest import Client
 #import config
 import weather, wiki, news
 
-DIFF_SENSITIVITY=0.6
+DIFF_SENSITIVITY=0.7
 
 def send_text(body, to_num, from_num):
     log.debug('Sending text')
@@ -43,10 +43,14 @@ def get_response_text(body):
     words = body.lower().split()
     api_words = get_api_words()
     chosen_api = ''
+    done = False
     for api in api_words:
         for word in words:
             if has_word(word, api['words']):
                 chosen_api = api['api']
+                break
+        if done:
+           break
 
     if not chosen_api:
         log.error('No api found from body')
