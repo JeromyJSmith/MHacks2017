@@ -55,7 +55,7 @@ body :-ms-input-placeholder {
 .container {
   max-width: 600px;
   margin: 0 auto;
-  padding: 80px 0;
+  padding: 60px 0;
   height: 400px;
   text-align: center;
 }
@@ -68,6 +68,7 @@ body :-ms-input-placeholder {
   font-weight: 200;
 }
 form {
+  height: 300px;
   padding: 20px 0;
   position: relative;
   z-index: 2;
@@ -227,4 +228,12 @@ form button:hover {
     -webkit-transform: translateY(-700px) rotate(600deg);
             transform: translateY(-700px) rotate(600deg);
   }
+}
+
+#login-button {
+    margin-left: 4px;
+}
+
+#sign-up-button {
+    margin-top: 10px;
 }
