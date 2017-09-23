@@ -1,12 +1,14 @@
+import config
 from flask import Flask, render_template, request
+from twilio.rest import Client
 
 app = Flask(__name__)
 
-#def send_text(body, to_num, from_num):
-#    client = Client(config.ACCOUNT_SID, config.AUTH_TOKEN)
-#    message = client.api.account.messages.create(to=to_num,
-#						from_=from_num,
-#						body=body)
+def send_text(body, to_num, from_num):
+    client = Client(config.ACCOUNT_SID, config.AUTH_TOKEN)
+    message = client.api.account.messages.create(to=to_num,
+						from_=from_num,
+						body=body)
 
 @app.route('/sms')
 def sms_handler():
