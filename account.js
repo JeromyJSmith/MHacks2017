@@ -26,9 +26,8 @@ $(document).ready(function() {
         }
     });
 
-    $(".attributes").click(function() {
-        if ($("save-button").text() == "Successful Save!") {
-            $("save-button").text().fadeOut(500);
+    $("#attributes").click(function() {
+        if ($("#save-button").text() == "Successful Save!") {
             $("#save-button").text("Save").fadeIn(500);
         }
     });
