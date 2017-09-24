@@ -11,7 +11,7 @@ wordstoremove = ['help']
 def locationOnly(strin):
     words = strin.split()
     for word in words:
-        if len(difflib.get_close_matches(word, wordstoremove, 3 , .8)) > 0:
+        if len(difflib.get_close_matches(word, wordstoremove, 3 , .6)) > 0:
             strin = strin.replace(word, "")
     return strin
 
