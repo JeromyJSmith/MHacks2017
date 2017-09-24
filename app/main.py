@@ -12,20 +12,53 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
-class User(UserMixin):
+def dummy_func():
+    pass
+
+class AttrDict(dict):
+    def __init__(self, *args, **kwargs):
+        super(AttrDict, self).__init__(*args, **kwargs)
+        self.__dict__ = self
+
+class User(object):
+
+    """
+    Mock of database for quicker hackathon app creation.
+    Dictionary holds account information.
+    """
     database = {
-        'AustinMeyer': ('AustinMeyer', 'hunter47'),
-        'Admin': ('Admin', 'password')
+		'admin': {'username': 'admin', 'password': 'password', 'is_active': True, 'get_id': dummy_func },
+		'austin': {'username': 'austin', 'password': 'meyer24', 'is_active': True}
     }
 
-    def __init__(self, username, password):
-        self.id = username
+
+
+    def __init__(self, username, password, id):
+        self.id = id
+        self.username = username
         self.password = password
+
+    def is_authenticated(self):
+        pass
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return self.id
 
     @classmethod
     def get(cls, id):
-        return cls.database.get(id)
-
+        log.debug('classmethod: %s' % (id))
+        log.debug(cls.database)
+        try:
+            log.debug(cls.database[id])
+            return cls.database[id]
+        except KeyError:
+            return None
 
 @app.route('/sms', methods=['POST'])
 def sms_handler():
@@ -38,14 +71,19 @@ def sms_handler():
     resp.message(new_body)
     return str(resp)
 
-
 @login_manager.user_loader
 def load_user(id):
-    return User.get(id)
+    try:
+        return User.get(id)
+    except KeyError:
+        return None
 
 @app.before_request
 def before_request():
     g.user = current_user
+    # session['admin'] = User('admin', 'password', 'admin')
+    #log.debug('made: %s' % (g.users['admin']))
+
 
 @app.route('/user/<username>')
 @login_required
@@ -53,20 +91,28 @@ def user(username):
     print('in user function')
     if username != g.user.id:
         return '<h1>You are not authorized to access that page</h1>'
-    return render_template('account.html')
+    return render_template('account.html',
+                            username=username)
 
 @app.route('/')
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
+        log.debug('test')
         return render_template('login.html')
-    username = request.form['username']
-    password = request.form['password']
+    json = request.get_json()
+    log.debug('login json: %s' %(json))
+    username = json['username']
+    password = json['password']
     user = User.get(username)
     if not user:
         log.error('No user found with username: %s' % (username))
-        return redirect(url_for('login'))
-    login_user(user)
+        return 'Fail', 401
+    log.debug('usr: %s' % user)
+    d = AttrDict()
+    d.update(user)
+    login_user(d)
+    log.debug('Logged in %s' %(user))
     return redirect(request.args.get('next') or url_for('login'))
 
 @app.route('/logout')
