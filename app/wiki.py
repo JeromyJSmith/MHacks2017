@@ -10,14 +10,14 @@ wordstoremove = ['wiki', 'wikipedia']
 def wikiOnly(strin):
     words = strin.split()
     for word in words:
-        if len(difflib.get_close_matches(word, wordstoremove, 3, .8)) > 0:
+        if len(difflib.get_close_matches(word, wordstoremove, 3, .6)) > 0:
             strin = strin.replace(word, "")
     return strin
 
 
 def search(strin):
-    strin = wikiOnly(strin)
-
+    strin = wikiOnly(strin).strip()
+    print(strin)
     log.info("wiki.py: searching for term: " + strin)
 
     #get the most important item with that name, if one exists
