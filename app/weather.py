@@ -52,3 +52,5 @@ def getWeather(strin):
     if 'alert' in data:
         finalText += "\n" + data['alert']['title'] + "\n" + data['alert']['description']
 
+    return finalText
+
