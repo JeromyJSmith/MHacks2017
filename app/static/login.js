@@ -82,7 +82,7 @@ $(document).ready(function() {
                 location.href = "account.html";
             }, 1000);
         } else {
-            //login failed
+            //sign up failed
 
         }
     });
