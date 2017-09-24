@@ -53,7 +53,7 @@ def user(username):
     print('in user function')
     if username != g.user.id:
         return '<h1>You are not authorized to access that page</h1>'
-    return '<h1>%s</h1>' % (username)
+    return render_template('account.html')
 
 @app.route('/')
 @app.route('/login', methods=['GET', 'POST'])
