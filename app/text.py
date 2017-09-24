@@ -17,10 +17,10 @@ def send_text(body, to_num, from_num):
 
 def get_api_words():
     return [
-        {'api': 'wikipedia', 'words': ['wiki', 'wikipedia']},
-        {'api': 'news', 'words': ['news', 'headlines', 'worldnews']},
-        {'api': 'weather', 'words': ['weather']},
-        {'api': 'help', 'words': ['help']},
+        {'api': 'help', 'words': ['help', 'helpme']},
+        {'api': 'weather', 'words': ['weather', 'forecast']},
+        {'api': 'news', 'words': ['news', 'headlines', 'worldnews', 'updates']},
+        {'api': 'wikipedia', 'words': ['wiki', 'wikipedia']}
     ]
 
 
@@ -55,11 +55,14 @@ def get_response_text(body):
 
     if not chosen_api:
         log.error('No api found from body')
-        return 'Nothing chosen'
+        return 'Thanks for using LifeText! Try something like any of these:\n'
+                    + 'weather Madison, WI\n'
+                    + 'technology news\n'
+                    + 'wikipedia Weezer\n'
+                    + 'help [sends an alarm text out to your listed emergency contacts]\n\n'
+                    + 'You can also go to lifetext.us to make an account'
 
     log.debug('api found: %s' % chosen_api)
     ret_string = run_api_function(chosen_api, body)
     if ret_string:
         return ret_string
-
-

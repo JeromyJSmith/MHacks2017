@@ -59,22 +59,22 @@ def findOutlet(str):
 		for word in words:
 			if hasWord(word, outlet["words"]):
 				log.info("news.py: chose news outlet: " + outlet["outlet"])
-				return outlet["outlet"]
+				return outlet
 
 	#default news outlet
 	log.info("news.py: went with default news outlet")
-	return "the-wall-street-journal"
+	return {"name": "The Wall Street Journal", "outlet": "the-wall-street-journal", "words": ["wall", "street"]}
 
-def getNews(str):
+def getNews(strIn):
 	#standard news outlet if none defined
-	outlet = "the-wall-street-journal"
+	outlet = {"name": "The Wall Street Journal", "outlet": "the-wall-street-journal"}
 
 	#print(hasWord('pupy', ['ape', 'apple', 'peach']))
-	outlet = findOutlet(str)
+	outlet = findOutlet(strIn)
 
 	#get the requested top stories
 	try:
-		requestJSON = requests.get('https://newsapi.org/v1/articles?source={}&apiKey=cbc90faf350c4cbe93ca4446bb3ff1b0'.format(outlet))
+		requestJSON = requests.get('https://newsapi.org/v1/articles?source={}&apiKey=cbc90faf350c4cbe93ca4446bb3ff1b0'.format(outlet["outlet"]))
 	except Exception as e:
 		log.error("news.py: " + e)
 		return "SERVER_ERROR"
@@ -85,7 +85,7 @@ def getNews(str):
 	headlines = [article.title for article in articles]
 	log.info("news.py: number of headlines = %d" % len(headlines))
 
-	finalText = "Top headlines from " + outlet.name + "\n\n"
+	finalText = "Top headlines from " + outlet["name"] + "\n\n"
 
 	#add every headline to final text, cutting it off if it's too long
 	for i in range(len(headlines)):
@@ -98,6 +98,6 @@ def getNews(str):
 		return "SERVER_ERROR"
 
 	#remove unnecessary last newline
-	finalText = finalText[:-4]
+	finalText = finalText[:-2]
 
 	return finalText

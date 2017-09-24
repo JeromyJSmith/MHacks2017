@@ -12,14 +12,15 @@ def weatherOnly(strin):
     words = strin.split()
     for word in words:
         if len(difflib.get_close_matches(word, wordstoremove, 3 , .6)) > 0:
-            strin = strin.replace(word + " ", "")
+            strin = strin.replace(word, "")
     return strin
 
 
 def getWeather(strin):
-    location = weatherOnly(strin)
-
-    log.info("Searching for location" + location)
+    location = weatherOnly(strin).strip()
+    if location == "":
+        return "Invalid request. Please enter: weather followed by CITY,STATE (\"weather Madison,WI\")"
+    log.info("Searching for location: " + location)
     try:
         result = Geocoder.geocode(location)
         (latitude, longitude) = result.coordinates
@@ -31,7 +32,7 @@ def getWeather(strin):
             return;
         elif e.status == "ZERO_RESULTS":
             log.info("Invalid location requested returning error message")
-            return "Invalid location. Please enter: weather followed by CITY,STATE"
+            return "Invalid request. Please enter: weather followed by CITY,STATE (\"weather Madison,WI\")"
         else:
             log.info("Error thrown: " + e.status)
             return "Error: " + e.status
@@ -51,4 +52,6 @@ def getWeather(strin):
     # If there is an alert add that to the final text
     if 'alert' in data:
         finalText += "\n" + data['alert']['title'] + "\n" + data['alert']['description']
+
+    return finalText
 
