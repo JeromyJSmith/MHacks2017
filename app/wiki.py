@@ -17,7 +17,8 @@ def wikiOnly(strin):
 
 def search(strin):
     strin = wikiOnly(strin).strip()
-    print(strin)
+    if strin == "":
+        return "Please enter a search term. (\"wiki Obama\")"
     log.info("wiki.py: searching for term: " + strin)
 
     #get the most important item with that name, if one exists
