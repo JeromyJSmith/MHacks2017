@@ -7,7 +7,7 @@ $(document).ready(function() {
 
         //AJAX CALL TO LOGIN, response is RESPONSE
 
-        var RESPONSE = false;
+        var RESPONSE = true;
         if (RESPONSE == true) {
             //login success, do animation
             $('form').fadeOut(500);
@@ -51,7 +51,7 @@ $(document).ready(function() {
                 location.href = "account.html";
             }, 1000);
         } else {
-            //login failed
+            //sign up failed
 
         }
     });

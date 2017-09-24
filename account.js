@@ -10,19 +10,16 @@ $(document).ready(function() {
 
         var RESPONSE = true;
         if (RESPONSE == true) {
-            //save success, wait for animation then go to account page
-            $(this).fadeTo(400, 0, function () {
-                $(this).delay(400);
-                $(this).html('Successful Save!');
-                $(this).fadeTo(400, 1);
-            });
-
-
-            //$(this).text().fadeOut(500);
-            //$(this).text("Successful Save!").fadeIn(500);
+            if ($(this).text() == "Save") {
+                $(this).fadeTo(500, .1);
+                setTimeout(function(){
+                    $("#save-button").html('Successful Save!');
+                    $("#save-button").fadeTo(500, 1);
+                }, 500);
+            }
         } else {
             //save failed
-
+            $(this).html('Save failed');
         }
     });
 
