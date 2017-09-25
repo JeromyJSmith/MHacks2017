@@ -21,4 +21,4 @@ Michigan Hackathon with Austin Klisch and Austin Meyer
 
 * To run Docker container on local machine through ngrok for development,  
    in ./run-build map <ngrok port/flask app port> to 80 ( -p port:80), then ngrok  
-   will correctly tunnel
+   will correctly tunnel.
