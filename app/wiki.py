@@ -19,7 +19,7 @@ def search(strin):
     strin = wikiOnly(strin).strip()
     if strin == "":
         return "Please enter a search term. (\"wiki Obama\")"
-    log.info("wiki.py: searching for term: " + strin)
+    log.info(f"wiki.py: searching for term: {strin}")
 
     #get the most important item with that name, if one exists
     try:
@@ -28,7 +28,7 @@ def search(strin):
         log.info("wiki.py: multiple possibilities for wiki summaries, choosing most common")
         summary = wikipedia.summary(e.options[0])
     except wikipedia.exceptions.PageError as e:
-        log.info("wiki.py: no page found for query: " + strin)
+        log.info(f"wiki.py: no page found for query: {strin}")
         summary = "No wikipedia page was found that matches your search"
 
     if len(summary) > MAX_SUMMARY_LENGTH:

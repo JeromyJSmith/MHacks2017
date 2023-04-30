@@ -20,7 +20,7 @@ def getWeather(strin):
     location = weatherOnly(strin).strip()
     if location == "":
         return "Invalid request. Please enter: weather followed by CITY,STATE (\"weather Madison,WI\")"
-    log.info("Searching for location: " + location)
+    log.info(f"Searching for location: {location}")
     try:
         result = Geocoder.geocode(location)
         (latitude, longitude) = result.coordinates
@@ -34,8 +34,8 @@ def getWeather(strin):
             log.info("Invalid location requested returning error message")
             return "Invalid request. Please enter: weather followed by CITY,STATE (\"weather Madison,WI\")"
         else:
-            log.info("Error thrown: " + e.status)
-            return "Error: " + e.status
+            log.info(f"Error thrown: {e.status}")
+            return f"Error: {e.status}"
 
     # Request from DarkSky
     request = requests.get("https://api.darksky.net/forecast/{0}/{1},{2}".format("3d4089e5787a5054f02ef8fa4f348d2c",

@@ -52,7 +52,7 @@ class User(object):
 
     @classmethod
     def get(cls, id):
-        log.debug('classmethod: %s' % (id))
+        log.debug(f'classmethod: {id}')
         log.debug(cls.database)
         try:
             log.debug(cls.database[id])
@@ -64,7 +64,7 @@ class User(object):
 def sms_handler():
     body = request.form['Body']
     from_num = request.form['From']
-    log.debug('Text from: %s says: (%s)' % (from_num, body))
+    log.debug(f'Text from: {from_num} says: ({body})')
     new_body = text.get_response_text(body)
 
     resp = MessagingResponse()
@@ -101,18 +101,18 @@ def login():
         log.debug('test')
         return render_template('login.html')
     json = request.get_json()
-    log.debug('login json: %s' %(json))
+    log.debug(f'login json: {json}')
     username = json['username']
     password = json['password']
     user = User.get(username)
     if not user:
-        log.error('No user found with username: %s' % (username))
+        log.error(f'No user found with username: {username}')
         return 'Fail', 401
-    log.debug('usr: %s' % user)
+    log.debug(f'usr: {user}')
     d = AttrDict()
     d.update(user)
     login_user(d)
-    log.debug('Logged in %s' %(user))
+    log.debug(f'Logged in {user}')
     return redirect(request.args.get('next') or url_for('login'))
 
 @app.route('/logout')

@@ -57,7 +57,6 @@ def get_response_text(body):
         log.error('No api found from body')
         return 'Thanks for using LifeText! Try something like any of these:\nweather Madison, WI\ntechnology news\nwikipedia Weezer\nhelp [sends an alarm text out to your listed emergency contacts]\n\nYou can also go to lifetext.us to make an account'
 
-    log.debug('api found: %s' % chosen_api)
-    ret_string = run_api_function(chosen_api, body)
-    if ret_string:
+    log.debug(f'api found: {chosen_api}')
+    if ret_string := run_api_function(chosen_api, body):
         return ret_string
